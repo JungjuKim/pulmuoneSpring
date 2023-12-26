@@ -1,5 +1,6 @@
 package org.pro.pulmuone.controller.event;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,7 @@ import org.pro.pulmuone.domain.member.MemberDTO;
 import org.pro.pulmuone.mapper.member.MemberMapper;
 import org.pro.pulmuone.service.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,28 +95,32 @@ public class EventController {
 	private MemberMapper memberMapper;
 	
 	@GetMapping("view")
-	public String view(@RequestParam int event_no, Model model, HttpServletRequest request) {
+	public String view(@RequestParam int event_no, Model model, HttpServletRequest request, Principal principal) {
 		EventViewVO event = eventService.viewEvent(event_no);
 		model.addAttribute("event", event);
-
-		/* 사용자 이름 마스킹 처리 */
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-		    String username = ((UserDetails)authentication.getPrincipal()).getUsername();
-		    MemberDTO memberDetails = memberMapper.read(username);
-		    model.addAttribute("memberDetails", memberDetails);
-
-		    String name = memberDetails != null ? memberDetails.getName() : null;
-		    String maskedName = name;
-		    if (name != null) {
-		        if (name.length() > 2) {
-		            maskedName = name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
-		        } else if (name.length() == 2) {
-		            maskedName = name.charAt(0) + "*";
-		        }
-		    }
-		    model.addAttribute("name", maskedName);
-		}
+		
+	    String memberId = null;
+	    if (principal != null) {
+	        memberId = principal.getName();
+	        model.addAttribute("memberId", memberId);
+	    }
+	    
+	    MemberDTO memberDetails = null;
+	    if (memberId != null) {
+	        memberDetails = memberMapper.read(memberId);
+	        model.addAttribute("memberInfo", memberDetails);
+	    }
+	    
+	    String name = memberDetails != null ? memberDetails.getName() : null;
+	    String maskedName = name;
+	    if (name != null) { // 마스킹처리
+	        if (name.length() > 2) {
+	            maskedName = name.charAt(0) + "*".repeat(name.length() - 2) + name.charAt(name.length() - 1);
+	        } else if (name.length() == 2) {
+	            maskedName = name.charAt(0) + "*";
+	        }
+	    }
+	    model.addAttribute("name", maskedName);
 	    
 	    List<EventCommentVO> comments = eventService.getComments(event_no, 1, 10); // 첫 페이지의 댓글 10개를 가져옴
 	    model.addAttribute("comments", comments);
@@ -161,37 +163,24 @@ public class EventController {
 
 	@PostMapping("view/EventComment.ajax")
 	@ResponseBody
-	public Map<String, Object> postComment(@RequestBody EventCommentVO eventCommentVO) {
+	public Map<String, Object> postComment(@RequestBody EventCommentVO eventCommentVO, Principal principal) {
 	    Map<String, Object> response = new HashMap<>();
 
-	    // 로그인 상태 확인
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-	        response.put("result", "notAuthenticated");
-	        return response;
-	    }
-
 	    try {
-	        eventService.saveComment(eventCommentVO);
+	        // 댓글 등록 로직
+	        eventService.saveComment(eventCommentVO, principal.getName());
+	        
 	        response.put("result", "success");
+	        response.put("message", "댓글이 등록되었습니다.");
 	    } catch (Exception e) {
-	        response.put("result", "fail");
+	        response.put("result", "failure");
+	        response.put("message", "댓글 등록 실패");
 	    }
+	    
 	    return response;
 	}
 
 
 
-	/*
-	@GetMapping("winner")
-	public String winner(Model model, HttpServletRequest request) {
-		// 당첨자 정보를 가져오는 코드를 여기에 작성하십시오.
 
-		request.getSession().setAttribute("activeTab", "당첨자발표");
-
-		return "winnerList";
-	}
-
-	
-	*/
 }

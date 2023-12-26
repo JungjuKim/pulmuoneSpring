@@ -67,8 +67,8 @@ public class EventServiceImpl implements EventService {
     }
     
     @Override
-    public void saveComment(EventCommentVO vo) {
-        eventMapper.insertComment(vo);
+    public void saveComment(EventCommentVO comment, String username) {
+        eventMapper.insertComment(comment);
     }
 
 }

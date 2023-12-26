@@ -20,6 +20,6 @@ public interface EventService {
     
     int getCommentCount(int event_no);
     
-    void saveComment(EventCommentVO dto);
+    void saveComment(EventCommentVO comment, String username);
     
 }
