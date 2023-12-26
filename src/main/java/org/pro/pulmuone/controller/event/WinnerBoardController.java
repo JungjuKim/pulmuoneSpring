@@ -40,7 +40,7 @@ public class WinnerBoardController {
 	    // 총 게시물 수를 모델에 추가합니다.
 	    model.addAttribute("totalWinners", totalRecords);
 
-	    return "event/winList.tiles";
+	    return "event/winner.tiles";
 	}
 
 

@@ -8,7 +8,7 @@
         Erequest.getSession().setAttribute("activeTab", "진행중이벤트");
     } else if (requestURI.contains("/event/endList")) {
         Erequest.getSession().setAttribute("activeTab", "종료된이벤트");
-    } else if (requestURI.contains("/event/winList")) {
+    } else if (requestURI.contains("/event/winner")) {
         Erequest.getSession().setAttribute("activeTab", "당첨자발표");
     } else if (requestURI.contains("/event/view")) {
         String eventNo = Erequest.getParameter("event_no");

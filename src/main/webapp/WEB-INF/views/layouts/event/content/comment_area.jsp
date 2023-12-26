@@ -224,15 +224,13 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#write-review').click(function(e) {
         e.preventDefault();
-        var authInfo = '<%= session.getAttribute("auth") %>';
-        if (authInfo == "null") {
+        var authInfo = '${memberId}';
+        if (authInfo == "null" || authInfo == "") {
             // 로그인이 필요한 경우
             $('#loginModal').modal('show');
         } else {
             postComment();
         }
-        
-        
     });
     
     $('#content').keydown(function(e) {
@@ -249,9 +247,9 @@ $(document).ready(function() {
             type: "POST",
             url: "/event/comment/write.do",
             data: {
-            	'event_no': encodeURIComponent('${eventView.event.event_no}'),
+            	'event_no': encodeURIComponent('${event.event_no}'),
                 'content': encodeURIComponent(content),
-                'member_no': encodeURIComponent('${session.getAttribute("auth").getMemberNo()}')
+                'member_no': encodeURIComponent('${memberInfo.member_no}')
             },
             dataType: "json",
             success: function(response) {
