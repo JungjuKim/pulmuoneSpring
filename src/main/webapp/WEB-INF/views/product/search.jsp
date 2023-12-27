@@ -37,7 +37,16 @@
 								<label>검색</label>
 							</dt>
 							<dd>
-								<input placeholder="검색어를 입력해주세요." title="검색어 입력" id="searchKeyword" name="searchKeyword" value=""> <a href="javascript:void(0);" class="btn-square">검색</a>
+								<c:choose>
+									<c:when test="${(param.recommendKeyword ne null and param.searchKeyword eq null) or (param.recommendKeyword ne '' and param.searchKeyword eq '') }">
+										<input placeholder="검색어를 입력해주세요." title="검색어 입력" id="searchKeyword" name="searchKeyword" value="${param.recommendKeyword }">
+										<a href="javascript:void(0);" class="btn-square">검색11</a>
+									</c:when>									
+									<c:otherwise>
+										<input placeholder="검색어를 입력해주세요." title="검색어 입력" id="searchKeyword" name="searchKeyword" value="${param.searchKeyword}">
+										<a href="javascript:void(0);" class="btn-square">검색22</a>
+									</c:otherwise>
+								</c:choose>
 							</dd>
 						</dl>
 					</div>
@@ -48,11 +57,21 @@
 				<div class="container">
 					<div class="list-area" style="padding-bottom: 60px; padding-top: 30px;">
 						<div class="list-head center" style="margin-bottom: 47px">
-							<em class="count"> <span>‘’</span> 관련 검색결과 총 <span>${fn:length(searchcountlist) }</span>건
-							</em>
+							<c:choose>
+								<c:when test="${(param.recommendKeyword ne null and param.searchKeyword eq null) or (param.recommendKeyword ne '' and param.searchKeyword eq '') }">
+									<em class="count"> <span>‘${param.recommendKeyword}’</span> 관련 검색결과 총 <span>${fn:length(searchcountlist) }</span>건
+									</em>
+								</c:when>							
+								<c:otherwise>
+									<em class="count"> <span>‘${param.searchKeyword}’</span> 관련 검색결과 총 <span>${fn:length(searchcountlist) }</span>건
+									</em>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						<!--S : 데이터 있는 경우-->
 						<!--S: prd-list -->
+						<c:choose>
+						<c:when test="${fn:length(searchcountlist) ne 0 }">
 						<div class="prd-list wrap">
 							<c:forEach items="${list}" var="dto">
 								<div class="prd-area">
@@ -131,6 +150,16 @@
 								</div>
 							</c:forEach>
 						</div>
+						</c:when>
+						<c:otherwise>
+						<div class="caution-unit page">
+							<span class="mark"></span>
+							<p>
+								검색 결과가 없습니다. <br>추천검색어로 검색해 보세요.
+							</p>
+						</div>
+						</c:otherwise>
+						</c:choose>
 						<nav aria-label="Page navigation example" class="pagenavi-area" data-pagination="">
 							<input type="hidden" id="pageNo" name="pageNo">
 							<ul class="pagination">
@@ -150,7 +179,16 @@
 									<c:otherwise>
 										<c:forEach begin="1" end="${fn:length(searchcountlist)/12+1 }" step="1" var="i">
 											<c:choose>
-												<c:when test="${ i eq param.pageNo }">
+												<c:when test="${ i eq param.pageNo}">
+													<li class="page-item active"><a class="page-link active" data-param="${i }">${i }</a></li>
+												</c:when>
+												<c:when test="${ i eq 1 and param.pageNo eq null}">
+													<li class="page-item active"><a class="page-link active" data-param="${i }">${i }</a></li>
+												</c:when>
+												<c:when test="${i eq 1 and param.recommendKeyword ne null}">
+													<li class="page-item active"><a class="page-link active" data-param="${i }">${i }</a></li>
+												</c:when>
+												<c:when test="${i eq 1 and param.searchKeyword ne null}">
 													<li class="page-item active"><a class="page-link active" data-param="${i }">${i }</a></li>
 												</c:when>
 												<c:otherwise>
@@ -171,6 +209,7 @@
 	</main>
 </div>
 <script>
+console.log(location.pathname);
 	$(".pagenavi-area .pagination .page-item a").click(function() {
 		let aparam = $(this).data("param");
 		location.replace(location.pathname + "?pageNo=" + aparam);		

@@ -7,16 +7,6 @@
 <script src="/resources/assets/js/cms.js"></script>
 
 
-<!-- <div class="breadcrumb-style"> -->
-<!-- 	<div class="container"> -->
-<!-- 		<ul> -->
-<!-- 			<li><a href="/">홈</a></li> -->
-<!-- 			<li><a href="/mypage">MY녹즙</a></li> -->
-<!-- 			<li><a class="" href="/mypage/personal/address">개인정보</a></li> -->
-<!-- 			<li><a class="active" href="/mypage/drink/paymethod">결제수단 관리</a></li> -->
-<!-- 		</ul> -->
-<!-- 	</div> -->
-<!-- </div> -->
 
 <form id="modifyForm" data-gtm-form-interact-id="0">
 	<input type="hidden" name="drkOrderNo" id="fdCustId" value="${ dto.drkOrderNo }">
@@ -26,10 +16,11 @@
 	<input type="hidden" name="cardValidation" id="cardValidation" value="">
 	<input type="hidden" name="drkPayMethod" value="${ dto.drkPayMethod }">
 <!-- 	<input type="hidden" name="payMethod" value="CARD"> -->
-	<div class="container aside-layout" style="padding-bottom:120px; ">
+<!-- 	<div class="container aside-layout" style="padding-bottom:120px; "> -->
 		
 
 		<div class="container">
+
 			<div class="border-wrapper" style="margin-bottom:0;">
 				<h2 class="container-title">
 					결제수단 관리
@@ -207,14 +198,14 @@
 				</div>
 			</div>
 		</div>
-	</div>
+<!-- 	</div> -->
 </form>
 
 <script type="text/javascript">
 	$().ready(function () {
 		
 
-	    $(".payMethod").text("${ dto.drkPayMethod == 0 ? '카드 자동결제' : v.drkPayMethod == 1 ? '계좌 자동이체' : '현장결제'}");
+	    $(".payMethod").text("${ dto.drkPayMethod == 0 ? '카드 자동결제' : dto.drkPayMethod == 1 ? '계좌 자동이체' : '현장결제'}");
 		
 		
 		

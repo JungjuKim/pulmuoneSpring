@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import org.pro.pulmuone.domain.mypage.order.BoxOrderMypageProductsDTO;
+import org.pro.pulmuone.domain.mypage.order.DrkChangesDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderBillDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageProductsDTO;
@@ -39,6 +40,10 @@ public interface DailyOrderMypageService {
 	List<DrkOrderMypageProductsDTO> selectDrkOrderMypageProducts(int drk_order_no);
 
 	int updateDrkOrder(int drk_order_no, List<DrkScheduleDTO> drkScheduleList);
+
+	List<DrkChangesDTO> selectDrkChanges(int drk_order_no);
+
+	List<DrkChangesDTO> selectDrkChange(int change_group_no);
 
 	
 }

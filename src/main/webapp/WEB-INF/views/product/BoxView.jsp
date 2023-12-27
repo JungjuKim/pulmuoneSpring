@@ -199,7 +199,7 @@
 				// 택배배송
 				var args = { item: [{itemCode, qty: ($('.box-qty').text()) || "1", eventIdx: ""}] };
 				console.log(args);
-				location.href = "/box/order/step1?item=" + encodeURIComponent(JSON.stringify(args));
+				window.orderProcess(args);
 				return;
 			}
 			// 매일배송
@@ -262,22 +262,7 @@
 				thumbnail: location.origin+ "/file/download"+'/product/${list[0].system_name}',
 				price: "<fmt:formatNumber value="${list[0].price }" pattern="#,###" />",
 			}	
-		};
-
-
-		//    region reviewPopup
-		$(document).on('click', '.review-item', function () {
-			const title = $(this).find('.title').text();
-			const content = $(this).find('.title').next().text();
-			const thumbnail = $(this).find('.thumb img').attr('src')
-			const nameAndDateEl = $(this).find('.span-tie')
-
-			const reviewModal = $('#reviewModal')
-			reviewModal.find('.header h4').text(title)
-			reviewModal.find('.thumb-area img').attr('src', thumbnail)
-			reviewModal.find('.scrollable p').text(content)
-			reviewModal.find('.scrollable .span-tie').replaceWith(nameAndDateEl.clone())
-		})		
+		};	
 
 </script>
 <script type="text/javascript">
@@ -414,14 +399,32 @@ window.orderProcess = function (args) {
 						</button>
 					</div>
 					<div class="product-addiction">
-						<div class="price-item">
-							<span style="padding-right: 12px; font-size: 22px;"> (원산지 :상품상세 참조) </span>
-							<p>
-								<fmt:formatNumber value="${list[0].price }" pattern="#,###" />
-								<span>원</span>
-							</p>
-							<span>(${list[0].products_size })</span>
-						</div>
+						<c:choose>
+							<c:when test="${list[0].event_price ne null and list[0].event_price ne '' }">
+								<div class="price-item">
+									<span style="padding-right: 12px; font-size: 22px;"> (원산지 :상품상세 참조) </span>
+									<p class="before-price big" style="margin-right: 10px;">
+										<fmt:formatNumber value="${list[0].price }" pattern="#,###" />
+										<span>원</span>
+									</p>
+									<p>
+										<fmt:formatNumber value="${list[0].event_price }" pattern="#,###" />
+										<span>원</span>
+									</p>
+									<span>(100ml X 30포)</span>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="price-item">
+									<span style="padding-right: 12px; font-size: 22px;"> (원산지 :상품상세 참조) </span>
+									<p>
+										<fmt:formatNumber value="${list[0].price }" pattern="#,###" />
+										<span>원</span>
+									</p>
+									<span>(${list[0].products_size })</span>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 
 					<div class="buy-option"></div>

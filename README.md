@@ -8,7 +8,7 @@
 
 <!-- 프로젝트 소개 -->
 ## 프로젝트 소개
-풀무원 녹즙 사이트 프로젝트 ( 2023/11/04 ~ 2023/11/22 )<br>
+풀무원 녹즙 사이트 프로젝트 ( 2023/12/06 ~ 2023/12/27 )<br>
 풀무원 녹즙은 매일배송과 택배배송으로 녹즙을 구매할 수 있는 쇼핑몰 사이트 입니다.<br>
 맞춤 큐레이션을 통해서 구매자에게 맞는 녹즙 추천이 가능합니다.<br>
 <br>
@@ -53,144 +53,205 @@
 
 ## 폴더구조
 ```
-└─main
-    ├─java
-    │  ├─auth
-    │  ├─filter
-    │  ├─jdbc
-    │  │  └─connection
-    │  ├─mvc
-    │  │  ├─command
-    │  │  └─controller
-    │  └─servlets
-    │      ├─cart
-    │      │  ├─command
-    │      │  ├─domain
-    │      │  ├─persistence
-    │      │  └─service
-    │      ├─curation
-    │      │  ├─command
-    │      │  ├─controller
-    │      │  ├─domain
-    │      │  ├─persistence
-    │      │  └─service
-    │      ├─etc
-    │      │  └─command
-    │      ├─event
-    │      │  ├─command
-    │      │  ├─domain
-    │      │  ├─persistence
-    │      │  └─service
-    │      ├─faq
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─model
-    │      │  └─service
-    │      ├─franchiseSearch
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─model
-    │      │  └─service
-    │      ├─info
-    │      │  └─command
-    │      ├─inquiry
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─model
-    │      │  └─service
-    │      ├─member
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─dto
-    │      │  └─service
-    │      ├─mypage
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─dto
-    │      │  └─service
-    │      ├─notice
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─model
-    │      │  └─service
-    │      ├─order
-    │      │  ├─command
-    │      │  ├─domain
-    │      │  ├─persistence
-    │      │  └─service
+├─java
+│  └─org
+│      └─pro
+│          └─pulmuone
+│              ├─controller
+│              │  ├─brand
+│              │  ├─cart
+│              │  ├─coupon
+│              │  ├─curation
+│              │  ├─etc
+│              │  ├─event
+│              │  ├─faq
+│              │  ├─franchiseSearch
+│              │  ├─info
+│              │  ├─inquiry
+│              │  ├─member
+│              │  ├─modal
+│              │  ├─mypage
+│              │  │  ├─drink
+│              │  │  │  └─payMethod
+│              │  │  └─personal
+│              │  │      ├─address
+│              │  │      ├─info
+│              │  │      └─refund
+│              │  ├─notice
+│              │  ├─order
+│              │  ├─product
+│              │  ├─taste
+│              │  └─upload
+│              ├─domain
+│              │  ├─auth
+│              │  ├─cart
+│              │  ├─coupon
+│              │  ├─curation
+│              │  ├─deregist
+│              │  ├─event
+│              │  ├─faq
+│              │  ├─franchiseSearch
+│              │  ├─inquiry
+│              │  ├─member
+│              │  ├─mypage
+│              │  │  ├─drink
+│              │  │  │  └─payMethod
+│              │  │  ├─order
+│              │  │  └─personal
+│              │  │      ├─address
+│              │  │      └─refund
+│              │  ├─notice
+│              │  ├─order
+│              │  │  ├─box
+│              │  │  └─daily
+│              │  └─product
+│              ├─mapper
+│              │  ├─cart
+│              │  ├─coupon
+│              │  ├─curation
+│              │  ├─deregist
+│              │  ├─event
+│              │  ├─faq
+│              │  ├─franchiseSearch
+│              │  ├─inquiry
+│              │  ├─main
+│              │  ├─member
+│              │  ├─modal
+│              │  ├─mypage
+│              │  │  ├─drink
+│              │  │  │  └─payMethod
+│              │  │  ├─order
+│              │  │  └─personal
+│              │  │      ├─address
+│              │  │      └─refund
+│              │  ├─notice
+│              │  ├─order
+│              │  └─product
+│              ├─security
+│              │  └─domain
+│              └─service
+│                  ├─coupon
+│                  ├─event
+│                  ├─faq
+│                  ├─franchiseSearch
+│                  ├─inquiry
+│                  ├─member
+│                  ├─mypage
+│                  │  ├─drink
+│                  │  │  └─payMethod
+│                  │  ├─order
+│                  │  └─personal
+│                  │      ├─address
+│                  │      ├─info
+│                  │      └─refund
+│                  ├─notice
+│                  └─order
+├─resources
+│  ├─META-INF
+│  └─org
+│      └─pro
+│          └─pulmuone
+│              └─mapper
+│                  ├─cart
+│                  ├─coupon
+│                  ├─curation
+│                  ├─deregist
+│                  ├─event
+│                  ├─faq
+│                  ├─franchiseSearch
+│                  ├─inquiry
+│                  ├─main
+│                  ├─member
+│                  ├─modal
+│                  ├─mypage
+│                  │  ├─drink
+│                  │  │  └─payMethod
+│                  │  ├─order
+│                  │  └─personal
+│                  │      ├─address
+│                  │      └─refund
+│                  ├─notice
+│                  ├─order
+│                  └─product
+└─webapp
+    ├─file
+    │  └─download
+    │      ├─banner
+    │      ├─brand
     │      ├─product
-    │      │  ├─command
-    │      │  ├─domain
-    │      │  ├─persistence
-    │      │  └─service
-    │      ├─refund
-    │      │  ├─command
-    │      │  ├─dao
-    │      │  ├─dto
-    │      │  └─service
-    │      ├─reivew
-    │      │  └─command
-    │      ├─search
-    │      │  └─command
-    │      ├─taste
-    │      │  └─command
-    │      └─utils
-    └─webapp
-        ├─file
-        │  └─download
-        │      ├─banner
-        │      └─product
-        ├─META-INF
-        ├─resources
-        │  └─assets
-        │      ├─css
-        │      ├─images
-        │      │  ├─common
-        │      │  ├─contents
-        │      │  ├─event
-        │      │  │  ├─thumbnail
-        │      │  │  └─view
-        │      │  └─ui
-        │      └─js
-        │          └─build
-        └─WEB-INF
-            ├─inc
-            ├─lib
-            ├─tags
-            └─views
-                ├─cart
-                ├─curation
-                │  └─result
-                ├─etc
-                ├─event
-                │  └─end
-                ├─faq
-                ├─franchiseSearch
-                ├─info
-                ├─inquiry
-                ├─layouts
-                │  ├─event
-                │  ├─forum
-                │  └─mypage
-                ├─member
-                │  ├─find
-                │  └─regist
-                ├─mypage
-                │  ├─order
-                │  │  └─box
-                │  └─personal
-                │      ├─info
-                │      └─refund
-                ├─notice
-                ├─order
-                │  ├─box
-                │  ├─daily
-                │  ├─inicis
-                │  └─taste
-                ├─product
-                ├─review
-                ├─taste
-                └─ui
+    │      └─tour
+    ├─images
+    ├─META-INF
+    ├─resources
+    │  └─assets
+    │      ├─css
+    │      ├─images
+    │      │  ├─common
+    │      │  ├─contents
+    │      │  ├─event
+    │      │  │  ├─thumbnail
+    │      │  │  └─view
+    │      │  ├─gift
+    │      │  └─ui
+    │      └─js
+    │          ├─build
+    │          └─order
+    ├─upload
+    └─WEB-INF
+        ├─classes
+        ├─spring
+        │  └─appServlet
+        ├─tiles
+        └─views
+            ├─brand
+            ├─cart
+            ├─common
+            ├─curation
+            │  └─result
+            ├─etc
+            ├─event
+            ├─faq
+            ├─franchiseSearch
+            ├─info
+            ├─inquiry
+            ├─layouts
+            │  ├─event
+            │  │  └─content
+            │  ├─forum
+            │  ├─member
+            │  │  ├─login
+            │  │  ├─quit
+            │  │  └─regist
+            │  ├─mypage
+            │  │  └─order
+            │  └─order
+            │      ├─box
+            │      └─daily
+            ├─member
+            │  ├─find
+            │  └─regist
+            ├─modal
+            ├─mypage
+            │  ├─benefit
+            │  ├─drink
+            │  │  └─paymethod
+            │  ├─home
+            │  ├─inquiry
+            │  ├─order
+            │  ├─personal
+            │  │  ├─address
+            │  │  ├─info
+            │  │  └─refund
+            │  ├─review
+            │  └─wish
+            ├─notice
+            ├─order
+            │  ├─box
+            │  └─daily
+            ├─product
+            ├─taste
+            ├─temp
+            └─ui
 ```
 
 
@@ -239,13 +300,14 @@
   - 상품 검색
   - 찜
   - 상품 상세보기
+  - 상품 검색
+  - 리뷰 페이지(일부 구현)
 
 <h4>💻 MARKUP </h4>
 
-  - Header 상품 검색(기능X)
   - 시음선물(주문X)
   - 창업안내(글작성X)
-  - 리뷰페이지
+  - 브랜드소개
 
 </div>
 <hr>
@@ -256,18 +318,33 @@
 <div markdown="1"><br>
 🌟 로그인/회원가입 <br><br>
   
+  - 로그인<br>
+  - 회원가입<br>
   - 아이디 찾기<br>
   - 비밀번호 찾기<br>
 
-🌟 환불계좌 관리 페이지<br>
+🌟 주소록 <br>
 
-  - 환불계좌 등록/변경 페이지<br>
+  - 주소록 목록<br>
+  - 주소록 등록/수정/삭제<br>
+  
+🌟 개인정보 변경<br>
 
-🌟 개인정보 페이지<br>
+  - 비밀번호 재확인<br>
+  - 개인정보 변경 <br>
+  - 회원 탈퇴 <br>
+  
+🌟 결제수단 관리 페이지<br>
 
-  - 변경 시, 비밀번호 확인<br>
+  - 음용내역 목록 <br>
+  - 대상 음용내역의 결제수단 변경<br>
 
-🌟 개인정보 변경 페이지<br><br>
+🌟 환불계좌 변경<br><br>
+
+  - 환불계좌 목록 <br>
+  - 환불계좌 등록/수정/삭제 <br>
+
+
 </div>
 <hr>
 </details>

@@ -2,18 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!-- 		<div class="breadcrumb-style"> -->
-<!-- 			<div class="container"> -->
-<!-- 				<ul> -->
-<!-- 				      <li><a href="/">홈</a></li> -->
-<!-- 				      <li><a href="/mypage">MY녹즙</a></li> -->
-<!-- 				      <li><a class="" href="/mypage/drink/drink">매일배송 음용내역</a></li> -->
-<!-- 				      <li><a class="active" href="/mypage/drink/drink">음용내역</a></li> -->
-<!-- 			   </ul> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
+
 				
 			<div class="container">
+			
 		      <div class="border-wrapper">
 		        <h2 class="container-title">
 		          환불계좌 등록
@@ -136,8 +128,7 @@
 
     function checkForm() {
       const accountForm = $('#accountForm').serializeObject();
-//       accountForm.insttCode = $('#bankCode').data('value')
-//       accountForm.insttCode = $('#bankCode').data('value')
+      accountForm.insttCode = $('#bankCode').data('value')
 
       if (!accountForm.insttCode) {
         alert('은행명을 선택하세요')

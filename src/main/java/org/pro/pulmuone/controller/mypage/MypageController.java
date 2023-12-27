@@ -2,13 +2,17 @@ package org.pro.pulmuone.controller.mypage;
 
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.pro.pulmuone.domain.mypage.order.BoxOrderMypageDTO;
 import org.pro.pulmuone.domain.mypage.order.BoxOrderMypageListDTO;
 import org.pro.pulmuone.domain.mypage.order.BoxOrderMypageProductsDTO;
+import org.pro.pulmuone.domain.mypage.order.DrkChangesDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderBillDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageProductsDTO;
@@ -31,9 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -197,7 +198,26 @@ public class MypageController {
 		DrkOrderMypageDTO drkOrderMypageDTO = this.dailyOrderMypageServiceImpl.selectDrinkInfo(drk_order_no);
 		model.addAttribute("drkOrderMypageDTO", drkOrderMypageDTO);
 		
+		// >> 변경 내역 정보 가져오기 <<
+		List<DrkChangesDTO> drkChanges = this.dailyOrderMypageServiceImpl.selectDrkChanges(drk_order_no);
+		Map<Integer, List<DrkChangesDTO>> groupedByChangeGroupNo = drkChanges.stream().collect(Collectors.groupingBy(DrkChangesDTO::getChange_group_no));
+
+		model.addAttribute("groupedByChangeGroupNo", groupedByChangeGroupNo);
+		
 		return "mypage/drink/changeHistory.tiles";
+	}
+	
+	@RequestMapping(value="/mypage/drink/drink/order-history/{change_group_no}", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+	public ResponseEntity<Map<String,Map<String,List<DrkChangesDTO>>>> dailyChangeHistoryModal(Model model, @PathVariable int change_group_no) {
+		log.info("> MypageController dailyChangeHistoryModal()...");
+		
+		List<DrkChangesDTO> drkChanges = this.dailyOrderMypageServiceImpl.selectDrkChange(change_group_no);
+		Map<String, List<DrkChangesDTO>> groupedByProductsNo = drkChanges.stream().collect(Collectors.groupingBy(DrkChangesDTO::getProducts_no));
+		
+		model.addAttribute("groupedByProductsNo", groupedByProductsNo);
+		
+		return groupedByProductsNo != null ? new ResponseEntity<>(Collections.singletonMap("RESULT_MSG", groupedByProductsNo), HttpStatus.OK)
+														: new ResponseEntity<>(Collections.singletonMap("RESULT_MSG", groupedByProductsNo), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping("/mypage/order/daily/change/{drk_order_no}")
@@ -466,7 +486,8 @@ public class MypageController {
 	public String reviewdelete(ProductsDTO dto, Model model, Principal principal,@PathVariable String idx) throws ClassNotFoundException, SQLException {		
 		dto.setMember_id( principal.getName() );
 		dto.setReview_no(idx);
-		int count = this.mapper.reviewdelete(dto);
+		this.mapper.reviewimgdelete(dto);
+		int count = this.mapper.reviewdelete(dto);		
 		model.addAttribute("count",count);
 		return "mypage/review/writelist.tiles";
 	}

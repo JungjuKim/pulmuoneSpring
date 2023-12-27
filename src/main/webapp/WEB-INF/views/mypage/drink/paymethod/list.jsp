@@ -2,16 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!-- 		<div class="breadcrumb-style"> -->
-<!-- 			<div class="container"> -->
-<!-- 				<ul> -->
-<!-- 					<li><a href="/">홈</a></li> -->
-<!-- 					<li><a href="/mypage">MY녹즙</a></li> -->
-<!-- 					<li><a class="" href="/mypage/personal/address.do">개인정보</a></li> -->
-<!-- 					<li><a class="active" href="/mypage/drink/paymethod.do">결제수단 관리</a></li> -->
-<!-- 				</ul> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
 				
 <div class="container">
 

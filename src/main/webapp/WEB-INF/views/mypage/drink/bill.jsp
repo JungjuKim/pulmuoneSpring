@@ -4,16 +4,6 @@
 <script src="/resources/assets/js/order/mypageDrink.js"></script>
 
 <div class="container">
-	<div class="breadcrumb-style">
-		<div class="wrap">
-			<ul>
-		    	<li><a href="/">홈</a></li>
-		        <li><a href="/mypage">My녹즙</a></li>
-		        <li><a href="/mypage/drink/drink">매일배송 음용내역</a></li>
-		        <li><a class="active">영수증조회</a></li>
-			</ul>
-		</div>
-	</div>
 	
 	<div class="border-wrapper">
 		<h2 class="container-title">영수증조회</h2>

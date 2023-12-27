@@ -5,16 +5,6 @@
 <script src="/resources/assets/js/order/mypageBox.js"></script>
 
 <div class="container">
-	<div class="breadcrumb-style">
-		<div class="wrap">
-			<ul>
-		    	<li><a href="/">홈</a></li>
-		        <li><a href="/mypage">My녹즙</a></li>
-		        <li><a href="/mypage/order/box">택배배송 주문내역</a></li>
-		        <li><a class="active">주문취소하기</a></li>
-			</ul>
-		</div>
-	</div>
 	
 	<div class="border-wrapper">
 			<h2 class="container-title">주문취소하기</h2>

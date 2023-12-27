@@ -3,10 +3,14 @@
 
 <div class="contents-area">
 	<div class="container">
-		<div class="location">
-			<a href="/">홈</a>
-			<a href="/">장바구니</a>
-			<a href="/">주문완료</a>
+		<div class="breadcrumb-style">
+	    	<div class="wrap">
+	        	<ul>
+	            	<li><a href="/">홈</a></li>
+	                <li><a href="/">장바구니</a></li>
+	                <li><a class="active">주문완료</a></li>
+				</ul>
+			</div>
 		</div>
 		
 		<div class="checkout-complete-area">

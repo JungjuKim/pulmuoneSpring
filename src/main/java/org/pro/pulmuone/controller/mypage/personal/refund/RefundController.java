@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.log4j.Log4j;
@@ -37,7 +36,7 @@ public class RefundController {
 		
 		if (dto != null) {
 			String acctNum = dto.getAcctNum();
-			String maskedAcctNum = String.format("%s*****", acctNum.substring(0,acctNum.length()-5));
+			String maskedAcctNum = acctNum.length() < 6 ? "*****" : String.format("%s*****", acctNum.substring(0,acctNum.length()-5));
 			
 			model.addAttribute("maskedAcctNum", maskedAcctNum);
 			

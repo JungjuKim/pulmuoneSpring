@@ -31,6 +31,9 @@
 		<!--  장바구니  -->
 		<security:intercept-url pattern="/cart/daily" access="isAuthenticated()" />
 		
+		<!--  주문  -->
+		<security:intercept-url pattern="*/order/**" access="isAuthenticated()" />
+		
 		<security:form-login 
 			login-page="/member/login"
 			login-processing-url="/member/login"

@@ -11,7 +11,7 @@
 				<h5>${ drkOrderMypageDTO.drk_order_name }</h5>
 				<span>${ drkOrderMypageDTO.drk_order_no }</span>
 			</div>
-			<a href="/mypage/order/dailyView?orderNo=${ drkOrderMypageDTO.drk_order_no }" class="rounded-button">상세보기</a>
+			<a href="/mypage/drink/drinks/${ drkOrderMypageDTO.drk_order_no }" class="rounded-button">상세보기</a>
 		</div>
 		
 		<div style="padding:20px 25px 20px 0;">

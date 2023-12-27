@@ -7,7 +7,7 @@
 	$(document).on("click", ".productMove", function(e) {
 		let idx = $(this).data('idx')
 		let goodType = $(this).data('goodtype')
-			location.href = '/product/' + goodType + "/" + idx;
+		location.href = '/product/' + goodType + "/" + idx;
 	})
 </script>
 <div class="wrapper">
@@ -27,28 +27,37 @@
 						</p>
 					</div>
 				</div>
-				<div class="box-partition">
-					<div class="drinkchange-list review">
-						<ul>
-							<c:forEach items="${reviewlist }" var="dto">
-								<li><a class="item productMove" data-idx="${dto.products_tag }" data-goodtype="${dto.delivery_type }" data-issale="Y" style="cursor: pointer">
-										<div class="thumb">
-											<img src="/file/download/product/${dto.system_name }" onerror="this.src='/resources/assets/images/common/no_img.png'" alt="">
-										</div>
-										<div class="contents">
-											<p class="prd-title title">${dto.products_name }</p>
-											<b class="price">${dto.price }<span class="unit-section">원 (${dto.products_size })</span>
-											</b>
-										</div>
-								</a>
-									<div class="button-area">
-										<a href="/mypage/action/review/write/${dto.products_no }" class="btn-default write btn-white">리뷰작성</a>
-									</div></li>
-							</c:forEach>
-						</ul>
-					</div>
-				</div>
-
+				<c:choose>
+					<c:when test="${fn:length(reviewlist) ne 0 }">
+						<div class="box-partition">
+							<div class="drinkchange-list review">
+								<ul>
+									<c:forEach items="${reviewlist }" var="dto">
+										<li><a class="item productMove" data-idx="${dto.products_tag }" data-goodtype="${dto.delivery_type }" data-issale="Y" style="cursor: pointer">
+												<div class="thumb">
+													<img src="/file/download/product/${dto.system_name }" onerror="this.src='/resources/assets/images/common/no_img.png'" alt="">
+												</div>
+												<div class="contents">
+													<p class="prd-title title">${dto.products_name }</p>
+													<b class="price">${dto.price }<span class="unit-section">원 (${dto.products_size })</span>
+													</b>
+												</div>
+										</a>
+											<div class="button-area">
+												<a href="/mypage/action/review/write/${dto.products_no }" class="btn-default write btn-white">리뷰작성</a>
+											</div></li>
+									</c:forEach>
+								</ul>
+							</div>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="caution-unit page">
+							<span class="mark"></span>
+							<p>작성 가능한 리뷰가 없습니다.</p>
+						</div>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</main>

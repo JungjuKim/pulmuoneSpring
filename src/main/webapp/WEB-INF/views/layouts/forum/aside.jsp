@@ -21,7 +21,7 @@
 <script>
  	<%-- aside 현재 페이지 active --%> 
 	let link = location.href;
-	console.log(link);
+	
 	$(".lnb-style li").each(function(){
 		if( link.includes($(this).data("page")) ) {
 			$(this).addClass("active");

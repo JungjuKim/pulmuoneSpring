@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.pro.pulmuone.domain.mypage.order.BoxOrderMypageProductsDTO;
+import org.pro.pulmuone.domain.mypage.order.DrkChangesDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderBillDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageProductsDTO;
@@ -137,6 +138,9 @@ public class DailyOrderMypageServiceImpl implements DailyOrderMypageService {
 		log.info("DailyOrderMypageServiceImpl.updateDrkOrder()...");
 		int rowCnt = 0;
 		
+		// change_group_no 조회
+		int change_group_no = dailyOrderMypageMapper.selectChangeGroupNo();
+		
 		// 기존 스케줄 가져오기
 		List<DrkScheduleDTO> drkOldScheduleList = dailyOrderMypageMapper.selectDrkScheduleList(drk_order_no);
 		
@@ -193,28 +197,14 @@ public class DailyOrderMypageServiceImpl implements DailyOrderMypageService {
 							drk_date = LocalDate.parse(newSchedule.getDrk_start_date(), formatter);
 							while (drk_date.isBefore(end_date) || drk_date.isEqual(end_date)) {		// start_date 부터 end_date까지 반복
 								drk_dayOfWeek = drk_date.getDayOfWeek().getValue();
-								switch (drk_dayOfWeek) {
-								case 1:
-									prdCnt = newSchedule.getMon_cnt();
-									break;
-								case 2:
-									prdCnt = newSchedule.getTue_cnt();
-									break;
-								case 3:
-									prdCnt = newSchedule.getWed_cnt();
-									break;
-								case 4:
-									prdCnt = newSchedule.getThu_cnt();
-									break;
-								case 5:
-									prdCnt = newSchedule.getFri_cnt();
-									break;
-								case 6:
-									// 주말일 때는 빠져나가기
+								
+								// 주말일 때는 빠져나가기
+								if (drk_dayOfWeek == 6) {
 									drk_date = drk_date.plusDays(2);
 									continue;
-								} // switch
+								} // if
 	
+								prdCnt = newCnt[drk_dayOfWeek-1];
 								// 수량이 0일 때는 빠져나가기
 								if (prdCnt == 0) {
 									drk_date = drk_date.plusDays(1);
@@ -234,7 +224,21 @@ public class DailyOrderMypageServiceImpl implements DailyOrderMypageService {
 								
 								drk_date = drk_date.plusDays(1);
 							} // while history
-							rowCnt += dailyOrderMypageMapper.insertDrkChanges(newSchedule); 	// drk 변경 내역 추가
+							
+							DrkChangesDTO changesDTO = DrkChangesDTO.builder()
+																								.drk_schedule_no(newSchedule.getDrk_schedule_no())
+																								.drk_order_no(drk_order_no)
+																								.change_type(1)
+																								.change_start_date(Date.valueOf(newSchedule.getDrk_start_date().substring(0, 10)))
+																								.change_end_date(newSchedule.getDrk_end_date())
+																								.products_no(newSchedule.getProducts_no())
+																								.before_cnt(oldCnt[j])
+																								.after_cnt(newCnt[j])
+																								.is_new(0)
+																								.day_of_week(j+1)
+																								.change_group_no(change_group_no)
+																							.build();
+							rowCnt += dailyOrderMypageMapper.insertDrkChanges(changesDTO); 	// drk 변경 내역 추가
 						} // if 카운트 수가 다르다면?
 					} // for cnt
 
@@ -301,10 +305,46 @@ public class DailyOrderMypageServiceImpl implements DailyOrderMypageService {
 				drk_date = drk_date.plusDays(1);
 			} // while history
 			
-			rowCnt += dailyOrderMypageMapper.insertDrkChanges(newSchedule);
+			newCnt[0] = newSchedule.getMon_cnt();
+			newCnt[1] = newSchedule.getTue_cnt();
+			newCnt[2] = newSchedule.getWed_cnt();
+			newCnt[3] = newSchedule.getThu_cnt();
+			newCnt[4] = newSchedule.getFri_cnt();
+			
+			for (int i = 0; i < 5; i++) {
+				// cnt가 0이면 빠져나가기
+				if (newCnt[i] == 0) continue;
+				
+				DrkChangesDTO changesDTO = DrkChangesDTO.builder()
+																						.drk_schedule_no(newSchedule.getDrk_schedule_no())
+																						.drk_order_no(drk_order_no)
+																						.change_type(1)
+																						.change_start_date(Date.valueOf(newSchedule.getDrk_start_date().substring(0,10)))
+																						.change_end_date(newSchedule.getDrk_end_date())
+																						.products_no(newSchedule.getProducts_no())
+																						.before_cnt(0)
+																						.after_cnt(newCnt[i])
+																						.is_new(1)
+																						.day_of_week(i+1)
+																						.change_group_no(change_group_no)
+																					.build();
+				rowCnt += dailyOrderMypageMapper.insertDrkChanges(changesDTO);
+			} // for changes
 		} // while
 		
 		return rowCnt;
+	}
+
+	@Override
+	public List<DrkChangesDTO> selectDrkChanges(int drk_order_no) {
+		log.info("DailyOrderMypageServiceImpl.selectDrkChanges()...");
+		return dailyOrderMypageMapper.selectDrkChanges(drk_order_no);
+	}
+
+	@Override
+	public List<DrkChangesDTO> selectDrkChange(int change_group_no) {
+		log.info("DailyOrderMypageServiceImpl.selectDrkChange()...");
+		return dailyOrderMypageMapper.selectDrkChange(change_group_no);
 	}
 	
 }

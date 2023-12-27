@@ -180,17 +180,22 @@
 		and member_no = (select member_no from member where member_id = #{member_id })
 	</select>
 
-	<delete id="reviewdelete">
+	<delete id="reviewdelete">		
 		DELETE FROM review
-		where reivew_no = ${review_no}
-		and member_id = #{member_id}
+		where review_no = ${review_no}
+		and member_no = (select member_no from member where member_id = #{member_id })
+	</delete>
+	
+	<delete id="reviewimgdelete">		
+		DELETE FROM review_img
+		where review_no = ${review_no}		
 	</delete>
 
 	<update id="reviewupdate">
 		UPDATE review
 		set content = ${content}
-		where reivew_no = ${review_no}
-		and member_id = #{member_id}
+		where review_no = ${review_no}
+		and member_no = (select member_no from member where member_id = #{member_id })
 	</update>
 
 </mapper>

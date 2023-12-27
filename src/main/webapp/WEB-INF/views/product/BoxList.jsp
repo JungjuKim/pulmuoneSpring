@@ -133,9 +133,18 @@
 													<div class="prd-title-wrapper">
 														<b class="prd-title">${dto.products_name }</b>
 													</div>
-													<div class="price-info" style="margin-bottom: 5px;">
-														<b class="now-price"><fmt:formatNumber value="${dto.price }" pattern="#,###" /><span> 원</span></b>
-													</div>
+													<c:choose>
+														<c:when test="${dto.event_price ne null and dto.event_price ne '' }">
+															<div class="price-info" style="margin-bottom: 5px;">
+																<b class="before-price" style="margin-bottom: 0px;">${dto.price }<span> 원</span></b> <b class="now-price">${dto.event_price }<span> 원</span></b>
+															</div>
+														</c:when>
+														<c:otherwise>
+															<div class="price-info" style="margin-bottom: 5px;">
+																<b class="now-price"><fmt:formatNumber value="${dto.price }" pattern="#,###" /><span> 원</span></b>
+															</div>
+														</c:otherwise>
+													</c:choose>
 													<span class="volume">(${dto.products_size })</span>
 												</div>
 											</a>
@@ -309,9 +318,18 @@
 												<div class="prd-title-wrapper">
 													<b class="prd-title"> ${dto.products_name }</b>
 												</div>
-												<div class="price-info" style="margin-bottom: 5px;">
-													<b class="now-price"><fmt:formatNumber value="${dto.price }" pattern="#,###" /> <span> 원</span> </b>
-												</div>
+												<c:choose>
+													<c:when test="${dto.event_price ne null and dto.event_price ne '' }">
+														<div class="price-info" style="margin-bottom: 5px;">
+															<b class="before-price" style="margin-bottom: 0px;">${dto.price }<span> 원</span></b> <b class="now-price">${dto.event_price }<span> 원</span></b>
+														</div>
+													</c:when>
+													<c:otherwise>
+														<div class="price-info" style="margin-bottom: 5px;">
+															<b class="now-price"><fmt:formatNumber value="${dto.price }" pattern="#,###" /><span> 원</span></b>
+														</div>
+													</c:otherwise>
+												</c:choose>
 												<span class="volume">(${dto.products_size })</span>
 											</div>
 										</a>

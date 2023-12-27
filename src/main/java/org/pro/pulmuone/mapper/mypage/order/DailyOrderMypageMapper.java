@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.pro.pulmuone.domain.mypage.order.BoxOrderMypageProductsDTO;
+import org.pro.pulmuone.domain.mypage.order.DrkChangesDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderBillDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageDTO;
 import org.pro.pulmuone.domain.mypage.order.DrkOrderMypageProductsDTO;
@@ -56,6 +57,12 @@ public interface DailyOrderMypageMapper {
 
 	int insertDrkHistory(DrkHistoryDTO drkHistoryDTO);
 
-	int insertDrkChanges(DrkScheduleDTO newSchedule);
+	int insertDrkChanges(DrkChangesDTO changesDTO);
+
+	List<DrkChangesDTO> selectDrkChanges(int drk_order_no);
+
+	int selectChangeGroupNo();
+
+	List<DrkChangesDTO> selectDrkChange(int change_group_no);
 
 }

@@ -29,4 +29,5 @@ public interface ProductMapper {
   List<ProductsDTO> myreviewlist(ProductsDTO dto);
   int reviewupdate(ProductsDTO dto);
   int reviewdelete(ProductsDTO dto);
+  int reviewimgdelete(ProductsDTO dto);
 }

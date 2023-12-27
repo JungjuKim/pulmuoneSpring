@@ -87,3 +87,5 @@
 	</div>
 
 </div>
+<img src="/resources/assets/images/common/couponGuide.png"
+			style="display: none" id="guideImage" alt="">

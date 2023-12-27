@@ -88,23 +88,35 @@
 										</a>
 									</div>
 								</div>
-								<div class="billing-area">
-									<div class="billing-prd">
-										<b>음용1</b>
-										<div class="prd-link">
-											<button type="button" data-toggle-view="#customer-num-view">
-												<i class="ico"></i> <span class="hide">고객번호 확인하기</span>
-											</button>
-											<div id="customer-num-view" class="customer-info" style="display: none;">
-												<em>고객번호</em> <span>230000234094</span> <a href="/mypage/drink/drink" class="button" type="button">변경</a>
+								<c:choose>
+									<c:when test="${drkOrderMypageList[0].drk_order_no ne null and drkOrderMypageList[0].drk_order_no ne ''  }">
+										<div class="billing-area">
+											<div class="billing-prd">
+												<b>${drkOrderMypageList[0].drk_order_name }</b>
+												<div class="prd-link">
+													<button type="button" data-toggle-view="#customer-num-view">
+														<i class="ico"></i> <span class="hide">고객번호 확인하기</span>
+													</button>
+													<div id="customer-num-view" class="customer-info" style="display: none;">
+														<em>고객번호</em> <span>${drkOrderMypageList[0].drk_order_no }</span> <a href="/mypage/drink/drink" class="button" type="button">변경</a>
+													</div>
+												</div>
+											</div>
+											<ul>
+												<li><span>12월 청구예정 금액</span> <b class="now-price">62,100<span> 원</span></b></li>
+												<li><span>실시간 금액</span> <b class="now-price">32,700<span> 원</span></b></li>
+											</ul>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="billing-area">
+											<div class="billing-prd" style="min-height: 40px; margin-bottom: 15px"></div>
+											<div class="tasting-btn">
+												<span>시음 선물로 풀무원녹즙을 경험해 보세요.</span> <a href="/taste/taste" class="button btn-default">시음 선물하기</a>
 											</div>
 										</div>
-									</div>
-									<ul>
-										<li><span>11월 청구예정 금액</span> <b class="now-price">62,100<span> 원</span></b></li>
-										<li><span>실시간 금액</span> <b class="now-price">32,700<span> 원</span></b></li>
-									</ul>
-								</div>
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</div>
 					</sec:authorize>
@@ -116,16 +128,32 @@
 									<i class="ico ico-personal-01"></i>
 								</div> <span>음용내역보기</span>
 						</a></li>
-						<li class="item"><a href="/mypage/drink/drinks/{}/{}" data-require-login="">
-								<div class="cover">
-									<i class="ico ico-personal-02"></i>
-								</div> <span>음용상품변경</span>
-						</a></li>
-						<li class="item"><a href="/mypage/drink/drinks/{}/{}" data-require-login="">
-								<div class="cover">
-									<i class="ico ico-personal-03"></i>
-								</div> <span>배송일정변경</span>
-						</a></li>
+						<c:choose>
+							<c:when test="${drkOrderMypageList[0].drk_order_no ne null and drkOrderMypageList[0].drk_order_no ne ''  }">
+								<li class="item"><a href="/mypage/order/daily/change/${drkOrderMypageList[0].drk_order_no }" data-require-login="">
+										<div class="cover">
+											<i class="ico ico-personal-02"></i>
+										</div> <span>음용상품변경</span>
+								</a></li>
+								<li class="item"><a href="/mypage/drink/drink/pause/${drkOrderMypageList[0].drk_order_no }" data-require-login="">
+										<div class="cover">
+											<i class="ico ico-personal-03"></i>
+										</div> <span>배송일정변경</span>
+								</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="item"><a href="/mypage?with=01" data-require-login="">
+										<div class="cover">
+											<i class="ico ico-personal-02"></i>
+										</div> <span>음용상품변경</span>
+								</a></li>
+								<li class="item"><a href="/mypage?with=01" data-require-login="">
+										<div class="cover">
+											<i class="ico ico-personal-03"></i>
+										</div> <span>배송일정변경</span>
+								</a></li>
+							</c:otherwise>
+						</c:choose>
 						<li class="item"><a href="/mypage/product/list" data-require-login="">
 								<div class="cover">
 									<i class="ico ico-personal-04"></i>
@@ -297,7 +325,7 @@
 				<div class="notice-cont">
 					<h2 class="sub-h2">공지사항</h2>
 					<ul>
-						<li><a href="/forum/notice/view?seq=1" title="해당 게시글로 가기">'명일엽' 원료 공급 부족으로 인한 제품 배송 지연 안내</a></li>
+						<li><a href="/forum/notice/view?seq=${noticelist[0].notice_no }" title="해당 게시글로 가기">${ noticelist[0].title }</a></li>
 					</ul>
 				</div>
 				<a href="/forum/notice/list" class="btn-more" title="해당 페이지로 가기"> <i class="ico ico-more"></i>
@@ -306,6 +334,3 @@
 		</div>
 	</div>
 </main>
-<%@ include file="/WEB-INF/views/ui/alertmodal.jsp"%>
-<%@ include file="/WEB-INF/views/ui/confirmmodal.jsp"%>
-<%@ include file="/WEB-INF/views/ui/confirmdesignmodal.jsp"%>

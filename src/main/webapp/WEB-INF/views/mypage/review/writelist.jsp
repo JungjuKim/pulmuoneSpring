@@ -22,16 +22,13 @@
 			
 			$("#reviewModal").css('z-index',1049);
 			confirmDesign("", "리뷰를 삭제하시겠습니까?",function(){				
-				post({url:'/mypage/action/review/delete/'+idx},function (response){
-					$('#reviewModal').modal('hide')
-					if(response.RESULT_MSG){
+				$.get('/mypage/action/review/delete/'+idx,).done(function(data){
+					$('#reviewModal').modal('hide')					
 						alert('삭제되었습니다.',()=>location.reload())
-					}else {
-						alert('잘못된 요청입니다..',()=>location.reload())
-					}
-				})
+				}).fail(function(data){
+					alert('잘못된 요청입니다..',()=>location.reload())
+				  })	
 			})
-
 	    })
     })
 </script>
@@ -72,6 +69,6 @@
 				</div>
 			</div>
 		</div>
-</main>
+	</main>
 </div>
 <%@ include file="/WEB-INF/views/ui/reviewmodal.jsp"%>

@@ -96,9 +96,9 @@
 	
 	<!-- int getNowPrice(int drk_order_no); -->
 	<select id="getNowPrice" resultType="Integer">
-		SELECT SUM(price)
+		SELECT NVL(SUM(price), 0)
 		FROM drk_history h JOIN products p ON h.products_no = p.products_no
-		WHERE h.drk_order_no = 1 AND drk_date BETWEEN TRUNC(SYSDATE, 'MM') AND SYSDATE
+		WHERE h.drk_order_no = #{drk_order_no} AND drk_date BETWEEN TRUNC(SYSDATE, 'MM') AND SYSDATE
 	</select>
 	
 	<!-- int updateDrkOrderStatus(int drk_order_no); -->
@@ -174,10 +174,36 @@
 		VALUES (seq_drk_history.NEXTVAL, #{drk_schedule_no}, #{drk_order_no}, #{products_no}, #{products_cnt}, #{drk_date}, #{drk_day}, #{drk_complete})
 	</insert>
 	
-	<!-- int insertDrkChanges(DrkScheduleDTO newSchedule); -->
+	<!-- int insertDrkChanges(DrkChangesDTO changesDTO); -->
 	<insert id="insertDrkChanges">
-		INSERT INTO drk_changes (changes_no, drk_schedule_no, drk_order_no, change_type, change_date, change_start_date, change_end_date, change_period)
-		VALUES (seq_drk_changes.NEXTVAL, #{drk_schedule_no}, #{drk_order_no}, 1, SYSDATE, TO_DATE(SUBSTR(#{drk_start_date}, 1, 10), 'YYYY-MM-DD'), #{drk_end_date}, #{drk_end_date}-TO_DATE(SUBSTR(#{drk_start_date}, 1, 10), 'YYYY-MM-DD'))
+		INSERT INTO drk_changes (changes_no, drk_schedule_no, drk_order_no, change_type, change_date, change_start_date, change_end_date, change_period
+											, products_no, before_cnt, after_cnt, is_new, day_of_week, change_group_no)
+		VALUES (seq_drk_changes.NEXTVAL, #{drk_schedule_no}, #{drk_order_no}, #{change_type}, SYSDATE
+					, #{change_start_date}, #{change_end_date}, #{change_end_date}-#{change_start_date}
+					, #{products_no}, #{before_cnt}, #{after_cnt}, #{is_new}, #{day_of_week}, #{change_group_no})
 	</insert>
+	
+	<!-- List<DrkChangesDTO> selectDrkChanges(int drk_order_no); -->
+	<select id="selectDrkChanges" resultType="org.pro.pulmuone.domain.mypage.order.DrkChangesDTO">
+		SELECT changes_no, drk_schedule_no, drk_order_no, change_type, change_date, change_start_date, change_end_date
+					, change_period , products_no, before_cnt, after_cnt, is_new, day_of_week, change_group_no
+		FROM drk_changes
+		WHERE drk_order_no = #{drk_order_no}
+	</select>
+	
+	<!-- int selectChangeGroupNo(); -->
+	<select id="selectChangeGroupNo" resultType="Integer">
+		SELECT seq_change_group.NEXTVAL
+		FROM dual
+	</select>
+	
+	<!-- List<DrkChangesDTO> selectDrkChange(int change_group_no); -->
+	<select id="selectDrkChange" resultType="org.pro.pulmuone.domain.mypage.order.DrkChangesDTO">
+		SELECT c.*, products_name, products_size, img_path, system_name
+		FROM drk_changes c JOIN products p ON c.products_no = p.products_no
+									JOIN products_img i ON c.products_no = i.products_no
+		WHERE change_group_no = #{drk_group_no} AND origin_name != 'View.png'
+		ORDER BY changes_no
+	</select>
 	
 </mapper>

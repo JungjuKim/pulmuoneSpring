@@ -2,17 +2,17 @@
 <script>
 	$(function() {
 		$('.dropdown-item').click(function() {
-			const idx = $(this).data('idx')
+			const idx = $(this).data('idx')				
 			if ($(this).hasClass('privacy')) {
 
 				$('.privacyPolicy').hide();
-				$(`.privacyPolicy[data-idx=${idx}]`).show()
+				$(`.privacyPolicy[data-idx=\${idx}]`).show()
 			} else {
 				$('.terms').hide();
-				$(`.terms[data-idx=${idx}]`).show()
+				$(`.terms[data-idx=\${idx}]`).show()
 			}
-		})
-	})
+		});
+	});
 </script>
 <div class="modal fade" id="privacyPolicy" tabindex="-1" aria-labelledby="privacyPolicy" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-scrollable">

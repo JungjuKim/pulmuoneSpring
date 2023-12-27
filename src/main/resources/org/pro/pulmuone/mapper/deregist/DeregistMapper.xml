@@ -6,7 +6,15 @@
 <mapper namespace="org.pro.pulmuone.mapper.deregist.DeregistMapper">
 	<insert id="insertDeregist">
 		INSERT INTO deregist ( member_no, dereg_type, dereg_reason )  
-		VALUES ( #{dto.memberNo}, #{dto.deregType}, #{dto.deregReason} )
+		VALUES ( #{dto.memberNo}, #{dto.deregType}, 
+		<choose>
+			<when test="dto.deregReason != null">
+				#{dto.deregReason} )
+			</when>
+			<otherwise>
+				'')
+			</otherwise>
+		</choose>
 	</insert>
 	
 	

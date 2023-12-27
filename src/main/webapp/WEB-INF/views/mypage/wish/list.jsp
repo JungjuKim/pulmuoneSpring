@@ -66,12 +66,12 @@
 
 </script>
 <div class="wrapper">
-	<main class="page forum">		
+	<main class="page forum">
 		<div class="container aside-layout" style="padding-bottom: 120px;">
 			<div class="container">
 				<div class="border-wrapper">
 					<h2 class="container-title">찜한 상품</h2>
-				
+
 				</div>
 				<div class="page-addiction-wrapper" style="align-items: center; margin-bottom: 17px;">
 					<div class="info-copy description" style="margin-top: 7px;">
@@ -85,31 +85,40 @@
 					</label>
 					<button type="button" id="deleteBtn" class="button-text">선택삭제</button>
 				</div>
-				<div class="box-partition" style="border: unset">
-
-					<ul class="drinkchange-list favorite" id="pagable-items" data-list-object="append" style="border: 1px solid #e5e5e5; border-radius: 10px">
-						<c:forEach items="${wishlist }" var="dto">
-							<li data-idx="${dto.idx }" data-tag="${dto.products_tag}"><label class="item-wrapper"> <input name="chk-prd1" type="checkbox">
-									<div class="item">
-										<a data-url="/product/${dto.delivery_type}/${dto.products_tag }?eventIdx=" onclick="event.preventDefault();hrefMove(this)" data-issale="Y" style="display: flex">
-											<div class="thumb">
-												<img src="/file/download/product/${dto.system_name }" alt="">
+				<c:choose>
+					<c:when test="${fn:length(wishlist) ne 0 }">
+						<div class="box-partition" style="border: unset">
+							<ul class="drinkchange-list favorite" id="pagable-items" data-list-object="append" style="border: 1px solid #e5e5e5; border-radius: 10px">
+								<c:forEach items="${wishlist }" var="dto">
+									<li data-idx="${dto.idx }" data-tag="${dto.products_tag}"><label class="item-wrapper"> <input name="chk-prd1" type="checkbox">
+											<div class="item">
+												<a data-url="/product/${dto.delivery_type}/${dto.products_tag }?eventIdx=" onclick="event.preventDefault();hrefMove(this)" data-issale="Y" style="display: flex">
+													<div class="thumb">
+														<img src="/file/download/product/${dto.system_name }" alt="">
+													</div>
+													<div class="contents">
+														<p class="prd-title">${dto.products_name }</p>
+														<b class="price">${dto.price }<span> 원(${dto.products_size})</span>
+														</b>
+													</div>
+												</a>
 											</div>
-											<div class="contents">
-												<p class="prd-title">${dto.products_name }</p>
-												<b class="price">${dto.price }<span> 원(${dto.products_size})</span>
-												</b>
-											</div>
-										</a>
-									</div>
-									<button type="button" data-idx="${dto.idx }" data-tag="${dto.products_tag}" class="btn-delete">
-										<i class="ico ico-prd-delete"></i> <span class="hide">카트에서 삭제</span>
-									</button>
-							</label></li>
-						</c:forEach>
-					</ul>
-				</div>
+											<button type="button" data-idx="${dto.idx }" data-tag="${dto.products_tag}" class="btn-delete">
+												<i class="ico ico-prd-delete"></i> <span class="hide">카트에서 삭제</span>
+											</button>
+									</label></li>
+								</c:forEach>
+							</ul>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="caution-unit page">
+							<span class="mark"></span>
+							<p>찜한 상품이 없습니다.</p>
+						</div>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
-	</main>	
+	</main>
 </div>
